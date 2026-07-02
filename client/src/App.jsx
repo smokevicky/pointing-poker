@@ -121,6 +121,17 @@ export default function App() {
         ) : !joined ? (
           /* LOBBY / NAME ENTRY */
           <RoomLobby roomId={roomId} onJoin={handleJoin} isCreator={sessionStorage.getItem("is_creator_" + roomId) === "true"} />
+        ) : !roomState ? (
+          /* LOADING / CONNECTION STATE */
+          <div className="auth-card glass" style={{ margin: "6rem auto", textAlign: "center" }}>
+            <h2 style={{ color: "var(--primary-cyan)" }}>Connecting to Realtime Session...</h2>
+            <p style={{ marginTop: "1rem" }}>
+              Establishing connection to your Firebase Database.
+            </p>
+            <p style={{ fontSize: "0.85rem", color: "#64748b", marginTop: "1.5rem", lineHeight: "1.4" }}>
+              Note: If this screen stays stuck, check that you have added your Firebase environment variables inside Vercel's Project Settings and triggered a Redeployment.
+            </p>
+          </div>
         ) : (
           /* ESTIMATION GAME BOARD */
           <div style={{ maxWidth: "480px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
