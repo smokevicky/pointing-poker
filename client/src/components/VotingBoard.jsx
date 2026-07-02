@@ -73,12 +73,22 @@ export function VotingBoard({
               );
             })}
           </div>
-          {/* Emoji row – always visible, not part of voting */}
-          <div className="emoji-row" style={{ display: "flex", justifyContent: "center", gap: "0.75rem", marginTop: "0.5rem" }}>
-            {emojiCards.map((emoji) => (
-              <div key={emoji} className="emoji-card" style={{ fontSize: "1.5rem" }}>{emoji}</div>
-            ))}
-          </div>
+            {/* Emoji row – clickable, votes shown immediately */}
+            <div className="emoji-row" style={{ display: "flex", justifyContent: "center", gap: "0.75rem", marginTop: "0.5rem" }}>
+              {emojiCards.map((emoji) => {
+                const isSelected = activeVote === emoji;
+                return (
+                  <div
+                    key={emoji}
+                    className={`emoji-card ${isSelected ? "selected" : ""}`}
+                    onClick={() => submitVote(isSelected ? null : emoji)}
+                    style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                  >
+                    {emoji}
+                  </div>
+                );
+              })}
+            </div>
         </div>
       )}
 
@@ -123,10 +133,16 @@ export function VotingBoard({
             let badgeClass = "player-vote-badge thinking";
             let badgeContent = "?";
 
-            if (roomState.isRevealed) {
+            const isEmojiVote = user.vote && !numericCardSet.has(user.vote);
+
+            if (isEmojiVote) {
+              // Emoji votes are always shown immediately
+              badgeClass = "player-vote-badge voted-revealed";
+              badgeContent = user.vote;
+            } else if (roomState.isRevealed) {
               if (hasVoted) {
                 badgeClass = "player-vote-badge voted-revealed";
-                badgeContent = user.vote === "Coffee" ? "☕" : user.vote;
+                badgeContent = user.vote;
               } else {
                 badgeClass = "player-vote-badge thinking";
                 badgeContent = "-";
