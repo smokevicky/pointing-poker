@@ -12,7 +12,14 @@ export function VotingBoard({
 
   if (!roomState) return null;
 
-  const users = Object.entries(roomState.users);
+  const users = Object.entries(roomState.users).sort((a, b) => {
+    const aObs = a[1].isObserver ? 1 : 0;
+    const bObs = b[1].isObserver ? 1 : 0;
+    if (bObs !== aObs) {
+      return bObs - aObs; // Observers first
+    }
+    return a[1].username.localeCompare(b[1].username); // Alphabetical secondary sort
+  });
   const myUser = roomState.users[currentSocketId];
   const activeVote = myUser?.vote;
   const isObserver = myUser?.isObserver;
