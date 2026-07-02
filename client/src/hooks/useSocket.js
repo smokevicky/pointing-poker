@@ -141,22 +141,28 @@ export function useSocket(roomId) {
 
       const historyId = Date.now().toString();
       updates[`rooms/${roomId}/history/${historyId}`] = {
-        average,
+        average: average !== null ? average : null,
         votes: Object.values(roomState.users).map(u => ({
-          username: u.username,
-          vote: u.vote,
-          isObserver: u.isObserver
+          username: u.username || "",
+          vote: u.vote !== undefined ? u.vote : null, // Prevent undefined payload crash
+          isObserver: !!u.isObserver
         }))
       };
     }
 
     // Reset round active state
     updates[`rooms/${roomId}/isRevealed`] = false;
-    Object.keys(roomState.users).forEach(uid => {
-      updates[`rooms/${roomId}/users/${uid}/vote`] = null;
-    });
+    if (roomState.users) {
+      Object.keys(roomState.users).forEach(uid => {
+        updates[`rooms/${roomId}/users/${uid}/vote`] = null; // Clear votes
+      });
+    }
 
-    update(pathRef, updates);
+    try {
+      update(pathRef, updates);
+    } catch (error) {
+      console.error("Firebase update failed:", error);
+    }
   };
 
   const deleteHistoryItem = (historyId) => {
