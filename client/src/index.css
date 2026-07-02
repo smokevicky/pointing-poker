@@ -193,14 +193,29 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
-  color: #ffffff;
+  background: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  color: var(--primary-cyan);
   box-shadow: var(--glow-shadow);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(16, 185, 129, 0.4);
+  background: rgba(52, 211, 153, 0.22);
+  border-color: var(--primary-cyan);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
+}
+
+:root.light .btn-primary {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #059669;
+}
+
+:root.light .btn-primary:hover {
+  background: rgba(16, 185, 129, 0.16);
+  border-color: #059669;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.15);
 }
 
 .btn-secondary {
@@ -301,11 +316,18 @@ body {
 }
 
 .poker-card.selected {
-  background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
-  color: #ffffff;
-  border-color: transparent;
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+  background: rgba(52, 211, 153, 0.15);
+  border: 1px solid var(--primary-cyan);
+  color: var(--primary-cyan);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
   transform: translateY(-8px);
+}
+
+:root.light .poker-card.selected {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: var(--primary-cyan);
+  color: #059669;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.18);
 }
 
 /* Players Grid */
@@ -385,10 +407,17 @@ body {
 }
 
 .player-vote-badge.voted-revealed {
-  background: linear-gradient(135deg, #047857, #10b981);
-  border-color: transparent;
-  color: #ffffff;
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: var(--primary-cyan);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+}
+
+:root.light .player-vote-badge.voted-revealed {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #059669;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.08);
 }
 
 .player-vote-badge.thinking {
