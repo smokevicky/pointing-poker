@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Eye, RotateCcw, Copy, Check, Users, Coffee, HelpCircle } from "lucide-react";
+import { Eye, RotateCcw, Copy, Check, Users, HelpCircle } from "lucide-react";
 
 export function VotingBoard({
   roomState,
@@ -24,7 +24,7 @@ export function VotingBoard({
   const activeVote = myUser?.vote;
   const isObserver = myUser?.isObserver;
 
-  const cards = ["0", "0.5", "1", "2", "3", "5", "8", "13", "20", "40", "100", "?", "Coffee"];
+  const cards = ["0", "0.5", "1", "2", "3", "5", "8", "Coffee", "🤔", "😭", "♾️", "🤷"]; 
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -64,13 +64,7 @@ export function VotingBoard({
                   onClick={() => submitVote(isSelected ? null : card)}
                   style={{ fontSize: "1.2rem", padding: "0.4rem 0", borderRadius: "8px" }}
                 >
-                  {card === "Coffee" ? (
-                    <Coffee size={16} />
-                  ) : card === "?" ? (
-                    <HelpCircle size={16} />
-                  ) : (
-                    card
-                  )}
+                  {card === "Coffee" ? "☕" : card}
                 </div>
               );
             })}
