@@ -22,13 +22,14 @@ export function HistoryLog({ history, onDelete }) {
         <div className="history-list" style={{ gap: "0.5rem" }}>
           {history.map((item, index) => {
             const roundNumber = history.length - index;
+            const voterCount = item.votes ? item.votes.filter(v => !v.isObserver).length : 0;
             return (
               <div key={item.id} className="history-item glass" style={{ padding: "0.6rem 1rem", borderRadius: "10px" }}>
                 <div className="history-story-info">
-                  <span className="history-story-title" style={{ fontSize: "0.95rem" }}>Round #{roundNumber}</span>
-                  <span className="history-story-meta" style={{ fontSize: "0.75rem" }}>
-                    Voted by {item.votes.length} user{item.votes.length === 1 ? "" : "s"}
-                  </span>
+                   <span className="history-story-title" style={{ fontSize: "0.95rem" }}>Round #{roundNumber}</span>
+                   <span className="history-story-meta" style={{ fontSize: "0.75rem" }}>
+                     Voted by {voterCount} user{voterCount === 1 ? "" : "s"}
+                   </span>
                 </div>
 
                 <div className="history-stats" style={{ gap: "1rem" }}>
