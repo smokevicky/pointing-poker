@@ -38,3 +38,4 @@ logs/
 .DS_Store?
 ehthumbs.db
 Thumbs.db
+.vercel
