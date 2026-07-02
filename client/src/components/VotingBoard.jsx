@@ -26,6 +26,7 @@ export function VotingBoard({
 
   const numberCards = ["0", "0.5", "1", "2", "3", "5", "8"]; // numeric estimates
   const emojiCards = ["☕", "🤔", "😭", "🤷", "♾️"]; // fun emojis (not counted)
+  const allCards = [...numberCards, ...emojiCards]; // combined deck for display
 
 
   const handleCopyLink = () => {
@@ -73,22 +74,24 @@ export function VotingBoard({
               );
             })}
           </div>
-            {/* Emoji row – clickable, votes shown immediately */}
-            <div className="emoji-row" style={{ display: "flex", justifyContent: "center", gap: "0.75rem", marginTop: "0.5rem" }}>
-              {emojiCards.map((emoji) => {
-                const isSelected = activeVote === emoji;
-                return (
-                  <div
-                    key={emoji}
-                    className={`emoji-card ${isSelected ? "selected" : ""}`}
-                    onClick={() => submitVote(isSelected ? null : emoji)}
-                    style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                  >
-                    {emoji}
-                  </div>
-                );
-              })}
-            </div>
+          {/* Emoji row – rendered as poker cards, centered with leading placeholder */}
+          <div className="cards-grid" style={{ gridTemplateColumns: "repeat(7, 1fr)", gap: "0.5rem", marginBottom: 0, marginTop: "0.5rem" }}>
+            {/* Placeholder to offset emojis one column to the right */}
+            <div className="poker-card" style={{ visibility: "hidden", padding: "0.4rem 0", borderRadius: "8px" }}></div>
+            {emojiCards.map((emoji, idx) => {
+              const isSelected = activeVote === emoji;
+              return (
+                <div
+                  key={emoji}
+                  className={`poker-card ${isSelected ? "selected" : ""}`}
+                  onClick={() => submitVote(isSelected ? null : emoji)}
+                  style={{ fontSize: "1.5rem", padding: "0.4rem 0", borderRadius: "8px", cursor: "pointer" }}
+                >
+                  {emoji}
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
@@ -167,7 +170,10 @@ export function VotingBoard({
                     {user.username} {isUserSelf && <span style={{ color: "#64748b", fontSize: "0.7rem" }}>(You)</span>}
                   </span>
                 </div>
-                <div className={badgeClass} style={{ width: "30px", height: "34px", fontSize: "0.9rem", borderRadius: "6px" }}>{badgeContent}</div>
+                {isEmojiVote
+                  ? <span style={{ fontSize: "1.5rem" }}>{user.vote}</span>
+                  : <div className={badgeClass} style={{ width: "30px", height: "34px", fontSize: "0.9rem", borderRadius: "6px" }}>{badgeContent}</div>
+                }
               </div>
             );
           })}
