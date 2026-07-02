@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Eye, RotateCcw, Copy, Check, Users, HelpCircle } from "lucide-react";
+import { Eye, RotateCcw, Copy, Check, Users } from "lucide-react";
 
 export function VotingBoard({
   roomState,
@@ -24,7 +24,9 @@ export function VotingBoard({
   const activeVote = myUser?.vote;
   const isObserver = myUser?.isObserver;
 
-  const cards = ["0", "0.5", "1", "2", "3", "5", "8", "Coffee", "🤔", "😭", "♾️", "🤷"]; 
+  const numberCards = ["0", "0.5", "1", "2", "3", "5", "8"]; // numeric estimates
+  const emojiCards = ["☕", "🤔", "😭", "🤷", "♾️"]; // fun emojis (not counted)
+
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -33,8 +35,10 @@ export function VotingBoard({
   };
 
   // Calculations for stats
+  // Only numeric votes are considered for stats
+  const numericCardSet = new Set(numberCards);
   const votes = Object.values(roomState.users)
-    .filter(u => !u.isObserver && u.vote !== null && u.vote !== undefined && u.vote !== "?");
+    .filter(u => !u.isObserver && numericCardSet.has(u.vote));
 
   const numericVotes = votes
     .map(u => parseFloat(u.vote))
@@ -55,7 +59,7 @@ export function VotingBoard({
             Select Estimate
           </h3>
           <div className="cards-grid" style={{ gridTemplateColumns: "repeat(7, 1fr)", gap: "0.5rem", marginBottom: 0 }}>
-            {cards.map((card) => {
+            {numberCards.map((card) => {
               const isSelected = activeVote === card;
               return (
                 <div
@@ -64,10 +68,16 @@ export function VotingBoard({
                   onClick={() => submitVote(isSelected ? null : card)}
                   style={{ fontSize: "1.2rem", padding: "0.4rem 0", borderRadius: "8px" }}
                 >
-                  {card === "Coffee" ? "☕" : card}
+                  {card}
                 </div>
               );
             })}
+          </div>
+          {/* Emoji row – always visible, not part of voting */}
+          <div className="emoji-row" style={{ display: "flex", justifyContent: "center", gap: "0.75rem", marginTop: "0.5rem" }}>
+            {emojiCards.map((emoji) => (
+              <div key={emoji} className="emoji-card" style={{ fontSize: "1.5rem" }}>{emoji}</div>
+            ))}
           </div>
         </div>
       )}
