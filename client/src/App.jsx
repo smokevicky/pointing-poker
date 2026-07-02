@@ -3,12 +3,28 @@ import { useSocket } from "./hooks/useSocket";
 import { RoomLobby } from "./components/RoomLobby";
 import { VotingBoard } from "./components/VotingBoard";
 import { HistoryLog } from "./components/HistoryLog";
-import { Spade, Wifi, WifiOff, PlusCircle } from "lucide-react";
+import { Spade, Wifi, WifiOff, PlusCircle, Sun, Moon } from "lucide-react";
 
 export default function App() {
   const [roomId, setRoomId] = useState("");
   const [joined, setJoined] = useState(false);
   const [socketId, setSocketId] = useState("");
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("poker_theme") || "dark";
+  });
+
+  useEffect(() => {
+    if (theme === "light") {
+      document.documentElement.classList.add("light");
+    } else {
+      document.documentElement.classList.remove("light");
+    }
+    localStorage.setItem("poker_theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
 
   // Extract Room ID from the URL path on mount and popstate
   useEffect(() => {
@@ -87,20 +103,43 @@ export default function App() {
           <span>pointing poker</span>
         </div>
 
-        {/* Server Status Icon */}
-        {roomId && (
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            {isConnected ? (
-              <span style={{ fontSize: "0.85rem", color: "#34d399", display: "flex", alignItems: "center", gap: "0.25rem" }}>
-                <Wifi size={16} /> Connected
-              </span>
-            ) : (
-              <span style={{ fontSize: "0.85rem", color: "#fb923c", display: "flex", alignItems: "center", gap: "0.25rem" }}>
-                <WifiOff size={16} /> Disconnected
-              </span>
-            )}
-          </div>
-        )}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          {/* Theme Toggler */}
+          <button 
+            onClick={toggleTheme}
+            className="btn-icon"
+            title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            style={{ 
+              color: "var(--text-color)", 
+              padding: "0.45rem", 
+              borderRadius: "8px",
+              background: "var(--card-bg)",
+              border: "1px solid var(--glass-border)",
+              boxShadow: "var(--shadow-overlay)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer"
+            }}
+          >
+            {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
+
+          {/* Connection Status Icon */}
+          {roomId && (
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              {isConnected ? (
+                <span style={{ fontSize: "0.85rem", color: "#10b981", display: "flex", alignItems: "center", gap: "0.25rem", fontWeight: 500 }}>
+                  <Wifi size={16} /> Connected
+                </span>
+              ) : (
+                <span style={{ fontSize: "0.85rem", color: "#f97316", display: "flex", alignItems: "center", gap: "0.25rem", fontWeight: 500 }}>
+                  <WifiOff size={16} /> Disconnected
+                </span>
+              )}
+            </div>
+          )}
+        </div>
       </header>
 
       {/* Main Container */}
