@@ -186,7 +186,7 @@ export function VotingBoard({
           <Eye size={16} />
           Show Cards
         </button>
-        <button className="btn btn-secondary" onClick={clearVotes} style={{ flex: 1, padding: "0.6rem", fontSize: "0.9rem", borderRadius: "8px" }}>
+        <button className="btn btn-danger" onClick={clearVotes} style={{ flex: 1, padding: "0.6rem", fontSize: "0.9rem", borderRadius: "8px" }}>
           <RotateCcw size={16} />
           Reset
         </button>

@@ -27,6 +27,10 @@
   --text-muted: #94a3b8;
   --shadow-overlay: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
   --card-bg: rgba(15, 23, 42, 0.45);
+
+  --primary-red: #f87171; /* Soft Red */
+  --primary-red-hover: #ef4444;
+  --glow-shadow-danger: 0 0 15px rgba(239, 68, 68, 0.22);
 }
 
 :root.light {
@@ -46,6 +50,10 @@
   --text-muted: #64748b;
   --shadow-overlay: 0 8px 24px 0 rgba(15, 23, 42, 0.06);
   --card-bg: rgba(255, 255, 255, 0.55);
+
+  --primary-red: #dc2626; /* Soft Red for light mode */
+  --primary-red-hover: #b91c1c;
+  --glow-shadow-danger: 0 0 15px rgba(220, 38, 38, 0.12);
 }
 
 * {
@@ -230,6 +238,32 @@ body {
 
 :root.light .btn-secondary:hover {
   background: rgba(15, 23, 42, 0.05);
+}
+
+.btn-danger {
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  color: var(--primary-red);
+  box-shadow: var(--glow-shadow-danger);
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  background: rgba(248, 113, 113, 0.22);
+  border-color: var(--primary-red-hover);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.25);
+}
+
+:root.light .btn-danger {
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.45);
+  color: #dc2626;
+}
+
+:root.light .btn-danger:hover {
+  background: rgba(220, 38, 38, 0.14);
+  border-color: #b91c1c;
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.15);
 }
 
 /* Board Layout */
