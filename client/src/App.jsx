@@ -7,7 +7,9 @@ import { Spade, Wifi, WifiOff, PlusCircle, Sun, Moon } from "lucide-react";
 
 export default function App() {
   const [roomId, setRoomId] = useState("");
-  const [joined, setJoined] = useState(false);
+  const [joined, setJoined] = useState(() => {
+    return !!sessionStorage.getItem("poker_username");
+  });
   const [socketId, setSocketId] = useState("");
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("poker_theme") || "dark";
@@ -35,6 +37,8 @@ export default function App() {
       } else {
         setRoomId("");
         setJoined(false);
+        sessionStorage.removeItem("poker_username");
+        sessionStorage.removeItem("poker_is_observer");
       }
     };
 
@@ -75,6 +79,7 @@ export default function App() {
     
     // Store the username in sessionStorage so we can match socketId if re-rendered
     sessionStorage.setItem("poker_username", username);
+    sessionStorage.setItem("poker_is_observer", isObserver.toString());
   };
 
   // Find socket id matching the current username from sessionStorage
@@ -99,6 +104,8 @@ export default function App() {
             window.history.pushState(null, "", "/");
             setRoomId("");
             setJoined(false);
+            sessionStorage.removeItem("poker_username");
+            sessionStorage.removeItem("poker_is_observer");
           }}>
             <Spade size={28} style={{ color: "var(--primary-cyan)" }} />
             <span>pointing poker</span>

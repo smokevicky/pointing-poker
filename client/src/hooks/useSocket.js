@@ -46,15 +46,30 @@ export function useSocket(roomId) {
   const [roomState, setRoomState] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
 
-  // 1. Sync connection status
+  // 1. Sync connection status and auto-rejoin if session exists
   useEffect(() => {
     if (!db) return;
     const connectedRef = ref(db, ".info/connected");
     const unsubscribe = onValue(connectedRef, (snap) => {
-      setIsConnected(snap.val() === true);
+      const connected = snap.val() === true;
+      setIsConnected(connected);
+
+      if (connected && roomId) {
+        const storedUsername = sessionStorage.getItem("poker_username");
+        const storedIsObserver = sessionStorage.getItem("poker_is_observer") === "true";
+        if (storedUsername) {
+          const userRef = ref(db, `rooms/${roomId}/users/${userId}`);
+          set(userRef, {
+            username: storedUsername,
+            vote: null,
+            isObserver: storedIsObserver
+          });
+          onDisconnect(userRef).remove();
+        }
+      }
     });
     return unsubscribe;
-  }, []);
+  }, [roomId]);
 
   // 2. Sync room state updates
   useEffect(() => {
