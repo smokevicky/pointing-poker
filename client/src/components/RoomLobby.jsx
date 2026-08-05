@@ -5,13 +5,20 @@ export function RoomLobby({ onJoin, roomId, isCreator }) {
   const [username, setUsername] = useState(() => {
     return localStorage.getItem("poker_display_name") || (isCreator ? "Sam" : "");
   });
-  const [isObserver, setIsObserver] = useState(isCreator ? true : false);
+  const [isObserver, setIsObserver] = useState(() => {
+    const saved = localStorage.getItem("poker_is_observer");
+    if (saved !== null) {
+      return saved === "true";
+    }
+    return isCreator ? true : false;
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const trimmedUsername = username.trim();
     if (!trimmedUsername) return;
     localStorage.setItem("poker_display_name", trimmedUsername);
+    localStorage.setItem("poker_is_observer", isObserver.toString());
     onJoin(trimmedUsername, isObserver);
   };
 
