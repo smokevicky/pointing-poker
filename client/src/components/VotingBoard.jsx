@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Eye, RotateCcw, Copy, Check, Users } from "lucide-react";
+import { Eye, RotateCcw, Copy, Check, Users, Coffee } from "lucide-react";
 
 export function VotingBoard({
   roomState,

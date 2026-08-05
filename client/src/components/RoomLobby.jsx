@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import { LogIn, Users } from "lucide-react";
 
 export function RoomLobby({ onJoin, roomId, isCreator }) {
-  const [username, setUsername] = useState(isCreator ? "Sam" : "");
+  const [username, setUsername] = useState(() => {
+    return localStorage.getItem("poker_display_name") || (isCreator ? "Sam" : "");
+  });
   const [isObserver, setIsObserver] = useState(isCreator ? true : false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!username.trim()) return;
-    onJoin(username.trim(), isObserver);
+    const trimmedUsername = username.trim();
+    if (!trimmedUsername) return;
+    localStorage.setItem("poker_display_name", trimmedUsername);
+    onJoin(trimmedUsername, isObserver);
   };
 
   return (
